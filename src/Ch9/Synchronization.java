@@ -1,7 +1,7 @@
-package Ch8;
+package Ch9;
 
+import java.util.ArrayList;
 import java.util.List;
-import  java.util.ArrayList;
 
 public class Synchronization {
     public static void main(String[] args) throws InterruptedException {

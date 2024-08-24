@@ -1,12 +1,15 @@
-package Ch8;
+package Ch9;
 
 import java.util.List;
-import  java.util.logging.Level;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StringReverseThread extends Thread{
     private List<Character> names;
     private String message;
+    private static Lock lock = new ReentrantLock();
 
     public StringReverseThread(List<Character> names, String message){
         this.names = names;
@@ -15,8 +18,9 @@ public class StringReverseThread extends Thread{
 
     @Override
     public void run() {
-        synchronized (names) {
-            System.out.println("'Names' acquired by " + Thread.currentThread().getName());
+        lock.lock();
+        try {
+            System.out.println("'Lock' acquired by " + Thread.currentThread().getName());
             for (int i = 0; i < message.length(); i++) {
                 try {
                     names.add(message.charAt(i));
@@ -25,7 +29,10 @@ public class StringReverseThread extends Thread{
                     Logger.getLogger(StringReverseThread.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
+            System.out.println(names);
+        } finally {
+            System.out.println("'Lock' unlocked by " + Thread.currentThread().getName());
+            lock.unlock();
         }
-        System.out.println(names);
     }
 }
